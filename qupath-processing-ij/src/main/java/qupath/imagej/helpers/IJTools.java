@@ -381,6 +381,11 @@ public class IJTools {
 	public static void quickShowImage(final String name, final ImageProcessor... ips) {
 		quickShowImage(name, null, ips);
 	}
-	
 
+
+	public static PathImage<ImagePlus> extractROI(ImageServer<BufferedImage> server, ROI pathROI, String roiName, RegionRequest request, boolean setROI, ImageDisplay imageDisplay) {
+		PathImage<ImagePlus> image = extractROI(server, pathROI, request, setROI, imageDisplay);
+		image.getImage().getRoi().setName(roiName);
+		return image;
+	}
 }

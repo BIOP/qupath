@@ -279,15 +279,18 @@ public class IJExtension implements QuPathExtension {
 
 	public static PathImage<ImagePlus> extractROIWithOverlay(ImageServer<BufferedImage> server, PathObject pathObject, PathObjectHierarchy hierarchy, RegionRequest request, boolean setROI, OverlayOptions options, ImageDisplay imageDisplay) {
 		ROI pathROI;
+		String roiName = null;
 		if (pathObject == null || !pathObject.hasROI()) {
 			pathROI = new RectangleROI(0, 0, server.getWidth(), server.getHeight());
 			//			logger.error("No ROI found to extract!");
 			//			return null;
-		} else
-			pathROI = pathObject.getROI();
-
+		} else {
+			pathROI=pathObject.getROI();
+			roiName=pathObject.getDisplayedName();
+		}
 		// Extract the image
-		PathImage<ImagePlus> pathImage = IJTools.extractROI(server, pathROI, request, setROI, imageDisplay);
+		//PathImage<ImagePlus> pathImage = IJTools.extractROI(server, pathROI, request, setROI, imageDisplay);
+		PathImage<ImagePlus> pathImage = IJTools.extractROI(server, pathROI, roiName, request, setROI, imageDisplay);
 		if (pathImage == null)
 			return pathImage;
 
