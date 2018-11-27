@@ -285,8 +285,9 @@ public class IJExtension implements QuPathExtension {
 			//			logger.error("No ROI found to extract!");
 			//			return null;
 		} else {
-			pathROI=pathObject.getROI();
-			roiName=pathObject.getDisplayedName();
+			pathROI = pathObject.getROI();
+			roiName = pathObject.getDisplayedName();
+			roiName += pathObject.getPathClass() == null ? "" : " ("+pathObject.getPathClass().getName()+")";
 		}
 		// Extract the image
 		//PathImage<ImagePlus> pathImage = IJTools.extractROI(server, pathROI, request, setROI, imageDisplay);
