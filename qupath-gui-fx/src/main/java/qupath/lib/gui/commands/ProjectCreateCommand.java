@@ -59,11 +59,12 @@ public class ProjectCreateCommand implements PathCommand {
 			logger.error(dir + " is not a valid project directory!");
 		}
 		for (File f : dir.listFiles()) {
-			if (!f.isHidden()) {
+			// IGNORE if the folder is empty or not
+			/**if (!f.isHidden()) {
 				logger.error("Cannot create project for non-empty directory {}", dir);
 				DisplayHelpers.showErrorMessage("Project creator", "Project directory must be empty!");
 				return;
-			}
+			}*/
 		}
 		qupath.setProject(new Project<>(dir, BufferedImage.class));
 	}
