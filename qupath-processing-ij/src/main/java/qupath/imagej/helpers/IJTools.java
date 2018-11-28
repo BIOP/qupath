@@ -385,7 +385,9 @@ public class IJTools {
 
 	public static PathImage<ImagePlus> extractROI(ImageServer<BufferedImage> server, ROI pathROI, String roiName, RegionRequest request, boolean setROI, ImageDisplay imageDisplay) {
 		PathImage<ImagePlus> image = extractROI(server, pathROI, request, setROI, imageDisplay);
-		image.getImage().getRoi().setName(roiName);
+		if(setROI) {
+			image.getImage().getRoi().setName(roiName);
+		}
 		return image;
 	}
 }
