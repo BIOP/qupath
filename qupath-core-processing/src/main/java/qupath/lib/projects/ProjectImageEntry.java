@@ -56,7 +56,7 @@ public class ProjectImageEntry<T> implements Comparable<ProjectImageEntry<T>> {
 
 	public ProjectImageEntry(final Project<T> project, final String serverPath, final String imageName, final String description, final Map<String, String> metadataMap) {
 		this.project = project;
-		this.serverPath = serverPath;
+		this.serverPath = serverPath.replace('\\', '/');
 		
 		// TODO: Check if this is a remotely acceptable way to achieve relative pathnames!  I suspect it is not really...
 		String projectPath = project.getBaseDirectory().getAbsolutePath();
