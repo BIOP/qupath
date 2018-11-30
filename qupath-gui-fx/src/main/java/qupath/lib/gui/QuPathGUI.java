@@ -790,7 +790,7 @@ public class QuPathGUI implements ModeWrapper, ImageDataWrapper<BufferedImage>, 
 	 */
 	public static File getExtensionDirectory() {
 		String path = PathPrefs.getExtensionsPath();
-		if (path == null || path.trim().length() == 0)
+		if ( path == null || path.trim().length() == 0 )
 			return null;
 		File dir = new File(path);
 		return dir;
@@ -5255,7 +5255,7 @@ public class QuPathGUI implements ModeWrapper, ImageDataWrapper<BufferedImage>, 
 		 */
 		public void refresh() {
 			File dirExtensions = getExtensionDirectory();
-			if (dirExtensions == null)
+			if (dirExtensions == null || !dirExtensions.exists())
 				return;
 			refreshExtensions(dirExtensions);
 			for (File dir : dirExtensions.listFiles()) {
