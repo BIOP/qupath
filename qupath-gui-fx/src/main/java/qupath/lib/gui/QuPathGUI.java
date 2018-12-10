@@ -37,6 +37,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -60,6 +61,7 @@ import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
+import javafx.event.EventTarget;
 import org.controlsfx.control.action.Action;
 import org.controlsfx.control.action.ActionUtils;
 import org.controlsfx.control.action.ActionUtils.ActionTextBehavior;
@@ -442,6 +444,9 @@ public class QuPathGUI implements ModeWrapper, ImageDataWrapper<BufferedImage>, 
 	 * @param path Path of an image, project or data file to open - may be null.
 	 * @param isStandalone True if QuPath should be run as a standalone application.
 	 */
+
+	Scene scene; // Sets scene accessible for BIOP Tablette fix
+
 	public QuPathGUI(final Stage stage, final String path, final boolean isStandalone) {
 		super();
 		
@@ -486,10 +491,54 @@ public class QuPathGUI implements ModeWrapper, ImageDataWrapper<BufferedImage>, 
 		Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			@Override
 			public void uncaughtException(Thread t, Throwable e) {
-				DisplayHelpers.showErrorNotification("QuPath exception", e);
-				if (actionLog != null)
-					actionLog.handle(null);
+				//---------------------------- BIOP Tablet Fix
+				if (e instanceof RuntimeException) {
+					if (e.getMessage().equals("Too many touch points reported")) {
+						logger.error("BIOP Tablet error - Touch points" );
+						try {
+							//touchPoints
+							//Field field = Scene.class.getDeclaredField("touchMap");
+							//field.setAccessible(true);
+							//field.set(scene,new TouchMap());
+
+							//touchPoints
+							Field field = Scene.class.getDeclaredField("touchPoints");
+							field.setAccessible(true);
+							field.set(scene,null);
+
+							//nextTouchEvent
+							field = Scene.class.getDeclaredField("nextTouchEvent");
+							field.setAccessible(true);
+							field.set(scene,null);
+
+							//touchEventSetId
+							field = Scene.class.getDeclaredField("touchEventSetId");
+							field.setAccessible(true);
+							field.setInt(scene,0);
+
+							//touchPointIndex
+							field = Scene.class.getDeclaredField("touchPointIndex");
+							field.setAccessible(true);
+							field.setInt(scene,0);
+
+							//touchTargets
+							field = Scene.class.getDeclaredField("touchTargets");
+							field.setAccessible(true);
+							field.set(scene,new HashMap<Integer, EventTarget>());
+
+						} catch (NoSuchFieldException e1) {
+							logger.error(e1.getMessage());
+						} catch (IllegalAccessException e1) {
+							logger.error(e1.getMessage());
+						}
+					} else {
+						DisplayHelpers.showErrorNotification("QuPath exception", e);
+						if (actionLog != null)
+							actionLog.handle(null);
+					}
+				}
 			}
+			//---------------------------- BIOP Tablet Fix
 		});
 		
 		
@@ -507,7 +556,7 @@ public class QuPathGUI implements ModeWrapper, ImageDataWrapper<BufferedImage>, 
 		createMenuBar();
 		pane.setTop(menuBar);
 		
-		Scene scene;
+		//Scene scene; // See BIOP Tablet fix
 		try {
 			Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
 			scene = new Scene(pane, bounds.getWidth()*0.8, bounds.getHeight()*0.8);
