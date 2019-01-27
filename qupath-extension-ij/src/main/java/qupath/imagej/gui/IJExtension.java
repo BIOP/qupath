@@ -154,6 +154,8 @@ public class IJExtension implements QuPathExtension {
 		
 		
 	private static synchronized ImageJ getImageJInstanceOnEDT() {
+		//final ImageJ ij = new ImageJ();
+		//ij.ui().showUI();
 		ImageJ ijTemp = IJ.getInstance();
 		Prefs.setThreads(1); // Turn off ImageJ's multithreading, since we do our own
 		if (ijTemp != null)
@@ -167,7 +169,10 @@ public class IJExtension implements QuPathExtension {
 			String ijPath = getImageJPath();
 			if (ijPath != null)
 				System.getProperties().setProperty("plugins.dir", ijPath);
-			ijTemp = new ImageJ(ImageJ.STANDALONE);
+			//net.imagej.ImageJ ij = new net.imagej.ImageJ();
+			//fiji.ui().showUI();
+			ijTemp = IJ.getInstance();//new ImageJ(ImageJ.STANDALONE);
+			//ijTemp = IJ.getInstance();//new ImageJ(ImageJ.STANDALONE);
 		} catch (Exception e) {
 			// There may be an error (e.g. on OSX when attempting to install an ApplicationListener), but one we can safely ignore -
 			// so don't print a full stack trace & try to get an instance again
@@ -567,11 +572,15 @@ public class IJExtension implements QuPathExtension {
 		}	
 		return null;
 	}
-	
-	
+
+	static net.imagej.ImageJ fiji;
 
 	@Override
 	public void installExtension(QuPathGUI qupath) {
+		// ImageJ needs to be created here for a correct legacy injector construction
+		fiji = new net.imagej.ImageJ();
+		fiji.ui().showUI();
+
 		Prefs.setThreads(1); // We always want a single thread, due to QuPath's multithreading
 //		Prefs.setIJMenuBar = false;
 		addQuPathCommands(qupath);

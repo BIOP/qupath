@@ -106,6 +106,8 @@ allprojects {
     mavenLocal()
     mavenCentral()
     maven { url "../maven/repo" }
+    //maven { url "https://maven.imagej.net/service/local/repositories/releases/content/" }
+    maven { url "https://maven.imagej.net/content/groups/public" }
   }
 
   dependencies {

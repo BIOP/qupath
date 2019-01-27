@@ -46,6 +46,7 @@ public class QuPathApp extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
+
 		// Handle any resets needed
 		List<String> args = new ArrayList<>(getParameters().getRaw());
 		if (args.contains("reset")) {
@@ -58,11 +59,13 @@ public class QuPathApp extends Application {
 			skipSetup = true;
 			args.remove("skip-setup");
 		}
-		
+
 		// Create main GUI
 		QuPathGUI gui = new QuPathGUI(stage);
 		logger.info("Starting QuPath with parameters: " + args);
-		
+
+
+
 		// Try to open an image, if required
 		if (args != null && !args.isEmpty()) {
 			String path = args.get(0);

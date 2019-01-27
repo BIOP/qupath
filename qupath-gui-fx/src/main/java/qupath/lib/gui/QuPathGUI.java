@@ -449,7 +449,7 @@ public class QuPathGUI implements ModeWrapper, ImageDataWrapper<BufferedImage>, 
 
 	public QuPathGUI(final Stage stage, final String path, final boolean isStandalone) {
 		super();
-		
+
 		updateBuildString();
 		
 		long startTime = System.currentTimeMillis();
@@ -486,7 +486,7 @@ public class QuPathGUI implements ModeWrapper, ImageDataWrapper<BufferedImage>, 
 		// Set this as the current instance
 		if (instance == null || instance.getStage() == null || !instance.getStage().isShowing())
 			instance = this;
-		
+
 		// Ensure the user is notified of any errors from now on
 		Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			@Override
@@ -540,8 +540,8 @@ public class QuPathGUI implements ModeWrapper, ImageDataWrapper<BufferedImage>, 
 			}
 			//---------------------------- BIOP Tablet Fix
 		});
-		
-		
+
+
 		logger.trace("Time to main component: {} ms", (System.currentTimeMillis() - startTime));
 
 		BorderPane pane = new BorderPane();
@@ -641,7 +641,7 @@ public class QuPathGUI implements ModeWrapper, ImageDataWrapper<BufferedImage>, 
 			}
 			
 		});
-		
+
 		
 		logger.debug("Time to display: {} ms", (System.currentTimeMillis() - startTime));
 		stage.show();
@@ -681,18 +681,18 @@ public class QuPathGUI implements ModeWrapper, ImageDataWrapper<BufferedImage>, 
 			}
 			
 		});
-		
+
 		// Install extensions
 		refreshExtensions(false);
-		
+
 		// Open an image, if required
 		if (path != null)
 			openImage(path, false, false, false);
 		
 		// Set the icons
 		stage.getIcons().addAll(loadIconList());
-		
-		
+
+
 		// Add scripts menu (delayed to here, since it takes a bit longer)
 		Menu menuAutomate = getMenu("Automate", false);
 		ScriptEditor editor = getScriptEditor();

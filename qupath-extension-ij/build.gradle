@@ -1,6 +1,10 @@
 
 description = 'qupath-extension-ij'
+
 dependencies {
   compile project(':qupath-processing-ij')
   compile project(':qupath-gui-fx')
+  compile 'net.imagej:imagej:2.0.0-rc-71'
+  compile 'net.imagej:imagej-legacy:0.35.0'
 }
+
