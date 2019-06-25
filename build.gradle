@@ -83,7 +83,7 @@ subprojects {
     jpen 'net.sourceforge.jpen:jpen:2-150301'
     if (nativesClassifier != null)
       jpen 'net.sourceforge.jpen:jpen:2-150301:' + nativesClassifier
-    imagej 'net.imagej:ij:1.51s'
+    imagej 'net.imagej:ij:1.51s' // IJ1 dependency for quapth-processing-ij
     openslide 'org.openslide:openslide:3.4.1_2'
     if (nativesClassifier != null)
       openslide 'org.openslide:openslide:3.4.1_2:' + nativesClassifier
@@ -106,7 +106,6 @@ allprojects {
     mavenLocal()
     mavenCentral()
     maven { url "../maven/repo" }
-    //maven { url "https://maven.imagej.net/service/local/repositories/releases/content/" }
     maven { url "https://maven.imagej.net/content/groups/public" }
   }
 
@@ -133,7 +132,7 @@ dependencies {
     compile project(':qupath-extension-ij')
     compile project(':qupath-extension-opencv')
     compile project(':qupath-extension-pen')
-
+    
     // Try to find packager.jar so it's possible to use UserJvmOptionsService,
     // and therefore change the memory limits from within the main GUI
     def filePackager = new File("${System.properties['java.home']}/../lib/packager.jar")

@@ -49,10 +49,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLClassLoader;
 
 import javax.swing.SwingUtilities;
 
 import org.controlsfx.control.action.Action;
+import org.scijava.plugin.PluginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,6 +101,7 @@ import qupath.lib.regions.RegionRequest;
 import qupath.lib.roi.RectangleROI;
 import qupath.lib.roi.interfaces.ROI;
 import qupathj.QUPath_Send_Overlay_to_QuPath;
+import qupathj.QUPath_Send_Overlay_to_QuPath_Command;
 import qupathj.QUPath_Send_ROI_to_QuPath;
 
 /**
@@ -573,14 +576,22 @@ public class IJExtension implements QuPathExtension {
 		return null;
 	}
 
-	static net.imagej.ImageJ fiji;
+	public static net.imagej.ImageJ fiji;
 
 	@Override
 	public void installExtension(QuPathGUI qupath) {
+
+		ClassLoader cl = ClassLoader.getSystemClassLoader();
+
+		URL[] urls = ((URLClassLoader)cl).getURLs();
+
+		for(URL url: urls){
+			System.out.println(url.getFile());
+		}
 		// ImageJ needs to be created here for a correct legacy injector construction
 		fiji = new net.imagej.ImageJ();
 		fiji.ui().showUI();
-
+		//fiji.context().getService(PluginService.class).reloadPlugins();
 		Prefs.setThreads(1); // We always want a single thread, due to QuPath's multithreading
 //		Prefs.setIJMenuBar = false;
 		addQuPathCommands(qupath);
