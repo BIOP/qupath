@@ -13,7 +13,12 @@ def nativeBundle = null                // Choose native bundle, or leave null fo
 def nativesClassifier = null           // Maven classifier for requesting native libraries
 
 // Handle OS-specific decisions
+import com.github.jk1.license.render.CsvReportRenderer
+import com.github.jk1.license.render.InventoryHtmlReportRenderer
+import com.github.jk1.license.render.MultiReportRenderer
+import com.github.jk1.license.render.TextReportRenderer
 import org.gradle.internal.os.OperatingSystem
+
 println 'Operating system: ' + OperatingSystem.current()
 def nativesCPP = null
 if (OperatingSystem.current().isMacOsX()) {
@@ -83,7 +88,7 @@ subprojects {
     jpen 'net.sourceforge.jpen:jpen:2-150301'
     if (nativesClassifier != null)
       jpen 'net.sourceforge.jpen:jpen:2-150301:' + nativesClassifier
-    imagej 'net.imagej:ij:1.51s'
+    imagej 'net.imagej:ij:1.52p'
     openslide 'org.openslide:openslide:3.4.1_2'
     if (nativesClassifier != null)
       openslide 'org.openslide:openslide:3.4.1_2:' + nativesClassifier
@@ -229,8 +234,6 @@ buildscript {
 
 // Run automated license generation (in addition to manually-curated licenses)
 apply plugin: 'com.github.jk1.dependency-license-report'
-import com.github.jk1.license.importer.*
-import com.github.jk1.license.render.*
 
 licenseReport {
     renderer = new MultiReportRenderer(new TextReportRenderer('THIRD-PARTY.txt'), new CsvReportRenderer(), new InventoryHtmlReportRenderer())
